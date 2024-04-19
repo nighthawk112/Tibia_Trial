@@ -7,9 +7,11 @@ gameLeftPanel = nil
 gameBottomPanel = nil
 showTopMenuButton = nil
 logoutButton = nil
+jumpButton = nil
 mouseGrabberWidget = nil
 countWindow = nil
 logoutWindow = nil
+jumpWindow = nil
 exitWindow = nil
 bottomSplitter = nil
 limitedZoom = false
@@ -56,6 +58,9 @@ function init()
 
   logoutButton = modules.client_topmenu.addLeftButton('logoutButton', tr('Exit'),
     '/images/topbuttons/logout', tryLogout, true)
+	
+	jumpButton = modules.client_topmenu.addLeftButton('jumpButton', tr('Jump'),
+    '/images/topbuttons/look', tryJump)
 
   showTopMenuButton = gameMapPanel:getChildById('showTopMenuButton')
   showTopMenuButton.onClick = function()
@@ -245,6 +250,21 @@ function tryExit()
     { text=tr('Logout'), callback=logoutFunc },
     { text=tr('Cancel'), callback=cancelFunc },
     anchor=AnchorHorizontalCenter }, logoutFunc, cancelFunc)
+
+  return true
+end
+
+function tryJump ()
+  if jumpWindow then
+    return true
+  end
+
+  local cancelFunc = function() jumpWindow:destroy() jumpWindow = nil end
+
+  jumpWindow = displayGeneralBox(tr('Jump'), tr(" "),
+  {
+    { text=tr('Jump'), callback=cancelFunc },
+    anchor=AnchorHorizontalCenter }, cancelFunc)
 
   return true
 end
